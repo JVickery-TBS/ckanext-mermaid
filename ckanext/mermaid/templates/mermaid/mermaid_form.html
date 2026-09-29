@@ -1,0 +1,35 @@
+{% import 'macros/form.html' as form %}
+
+<fieldset>
+<legend>{{ _("Labels by Language") }}</legend>
+  {% for locale in available_locales %}
+    {% call form.input(
+      'label_' ~ locale,
+      id='field-label_' ~ locale,
+      label=_('Label') ~ ' (' ~ locale.upper() ~ ')',
+      value=data['label_' ~ locale],
+      error=errors['label_' ~ locale],
+      is_required=false,
+      attrs={'class': 'form-control', 'size': '80'}) %}
+      {{ form.info(_('The label for the rendered visual') ~ ' (' ~ locale.upper() ~ ')') }}
+    {% endcall %}
+  {% endfor %}
+</fieldset>
+<fieldset>
+  <legend>{{ _("Markdown Syntax by Language") }}</legend>
+  {% for locale in available_locales %}
+    {% call form.textarea(
+      'markdown_' ~ locale,
+      id='field-markdown_' ~ locale,
+      label=_('Markdown Syntax') ~ ' (' ~ locale.upper() ~ ')',
+      value=data['markdown_' ~ locale],
+      error=errors['markdown_' ~ locale],
+      is_required=(locale in required_locales),
+      attrs={'class': 'form-control w-full', 'size': '80'}) %}
+      {{ form.info(_('The Mermaid Markdown code') ~ ' (' ~ locale.upper() ~ ')') }}
+    {% endcall %}
+  {% endfor %}
+</fieldset>
+
+{% asset 'ckanext-mermaid/form-css' %}
+{% asset 'ckanext-mermaid/form-js' %}

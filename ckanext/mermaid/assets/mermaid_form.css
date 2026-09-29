@@ -1,0 +1,11 @@
+body fieldset .form-group{
+  clear: both;
+}
+
+body [data-module="resource-view-filters-form"]{
+  display: none !important;
+}
+
+body .public-report-field{
+  display: none;
+}

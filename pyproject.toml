@@ -1,0 +1,170 @@
+[build-system]
+requires = ['setuptools>=44']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'ckanext-mermaid'
+version = '0.0.1'
+description = 'CKAN Extension for Mermaid Markdown as a Resource View'
+readme = 'README.md'
+license = { text = 'GPL-3.0-or-later' }
+authors = [
+    { name = 'Jesse Vickery', email = 'jesse.vickery@tbs-sct.gc.ca' }
+]
+requires-python = '>=3.9'
+dependencies = [
+]  # see requirements.txt
+keywords = ['ckan', 'ckanext', 'mermaid', 'markdown', 'syntax', 'graph', 'chart']
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+]
+
+[project.urls]
+Homepage = 'https://github.com/JVickery-TBS/ckanext-mermaid#readme'
+Repository = 'https://github.com/JVickery-TBS/ckanext-mermaid'
+
+[project.entry-points."ckan.plugins"]
+mermaid_view = "ckanext.mermaid.plugin:MermaidViewPlugin"
+
+[project.entry-points."babel.extractors"]
+ckan = "ckan.lib.extract:extract_ckan"
+
+[tool.babel.extract_messages]
+keywords = ["translate", "isPlural"]
+add_comments = "TRANSLATORS:"
+output_file = "ckanext/mermaid/i18n/ckanext-mermaid.pot"
+width = 80
+
+[tool.babel.init_catalog]
+domain = "ckanext-mermaid"
+input_file = "ckanext/mermaid/i18n/ckanext-mermaid.pot"
+output_dir = "ckanext/mermaid/i18n"
+
+[tool.babel.update_catalog]
+domain = "ckanext-mermaid"
+input_file = "ckanext/mermaid/i18n/ckanext-mermaid.pot"
+output_dir = "ckanext/mermaid/i18n"
+previous = true
+
+[tool.babel.compile_catalog]
+domain = "ckanext-mermaid"
+directory = "ckanext/mermaid/i18n"
+statistics = true
+
+[tool.flake8]
+max-complexity = 100
+max-line-length = 88
+count = true
+exit-zero = true
+statistics = true
+
+[tool.pyright]
+pythonVersion = '3.0'
+include = ['ckanext/mermaid']
+exclude = ['.*', '.venv', '**/node_modules', '**/__pycache__']
+strict = []
+strictParameterNoneValue = true
+reportFunctionMemberAccess = true
+reportMissingImports = true
+reportMissingModuleSource = true
+reportMissingTypeStubs = false
+reportImportCycles = false
+reportUnusedImport = true
+reportUnusedClass = true
+reportUnusedFunction = true
+reportUnusedVariable = true
+reportDuplicateImport = true
+reportOptionalSubscript = true
+reportOptionalMemberAccess = true
+reportOptionalCall = true
+reportOptionalIterable = true
+reportOptionalContextManager = true
+reportOptionalOperand = true
+reportTypedDictNotRequiredAccess = false
+reportConstantRedefinition = true
+reportIncompatibleMethodOverride = false
+reportIncompatibleVariableOverride = true
+reportOverlappingOverload = true
+reportUntypedFunctionDecorator = false
+reportUnknownParameterType = true
+reportUnknownArgumentType = false
+reportUnknownLambdaType = false
+reportUnknownMemberType = false
+reportMissingTypeArgument = true
+reportInvalidTypeVarUse = true
+reportCallInDefaultInitializer = true
+reportUnknownVariableType = false
+reportUntypedBaseClass = true
+reportUnnecessaryIsInstance = true
+reportUnnecessaryCast = true
+reportUnnecessaryComparison = true
+reportAssertAlwaysTrue = true
+reportSelfClsParameterName = true
+reportUnusedCallResult = false
+useLibraryCodeForTypes = true
+reportGeneralTypeIssues = true
+reportPropertyTypeMismatch = true
+reportWildcardImportFromLibrary = true
+reportUntypedClassDecorator = false
+reportUntypedNamedTuple = true
+reportPrivateUsage = false
+reportPrivateImportUsage = true
+reportInconsistentConstructor = true
+reportMissingSuperCall = false
+reportUninitializedInstanceVariable = false
+reportInvalidStringEscapeSequence = true
+reportMissingParameterType = true
+reportImplicitStringConcatenation = false
+reportUndefinedVariable = true
+reportUnboundVariable = true
+reportInvalidStubStatement = true
+reportIncompleteStub = true
+reportUnsupportedDunderAll = true
+reportUnusedCoroutine = true
+reportUnnecessaryTypeIgnoreComment = true
+reportMatchNotExhaustive = true
+
+[tool.ruff]
+line-length = 88
+target-version = 'py39'
+exclude = ['.*', './.venv', './node_modules']
+
+[tool.ruff.format]
+quote-style = 'single'
+indent-style = 'space'
+
+[tool.ruff.lint]
+select = [
+    # 'ANN0', # type annotations for function arguments
+    # 'B',  # likely bugs and design problems
+    # 'BLE',  # do not catch blind exception
+    # 'C4',  # better list/set/dict comprehensions
+    'C90',  # check McCabe complexity
+    # 'DTZ', # enforce timezone in date objects
+    'E',  # pycodestyle error
+    'W',  # pycodestyle warning
+    'F',  # pyflakes
+    # 'FA', # verify annotations from future
+    'G',  # format strings for logging statements
+    # 'N',  # naming conventions
+    # 'I',  # isort
+    # 'ICN', # import conventions
+    # 'D1',  # require doc
+    # 'D2',  # doc formatting
+    # 'D4',  # doc convention
+    # 'PL',  # pylint
+    'PLW0602', # global-variable-not-assigned
+    # 'PERF', # performance anti-patterns
+    # 'PT',  # pytest style
+    # 'PIE',  # misc lints
+    # 'RET',  # improvements for return statements
+    # 'RSE',  # improvements for rise statements
+    # 'S',  # security testing
+    # 'SIM',  # simplify code
+    # 'T10',  # debugging statements
+    # 'T20',  # print statements
+    # 'TID',  # tidier imports
+    # 'TRY',  # better exceptions
+    # 'UP',  # upgrade syntax for newer versions of the language
+]

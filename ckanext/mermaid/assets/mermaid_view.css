@@ -1,0 +1,38 @@
+body .mermaid-view{
+  background: none !important;
+}
+
+body .mermaid-view div#mermaid-wrapper{
+  padding-top: 50%;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+body .mermaid-view div#mermaid-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: visible !important;
+}
+
+body .mermaid-view[data-fullscreen="True"] div#mermaid-container{
+  position: fixed !important;
+}
+
+body .mermaid-view div.mermaid-error-message{
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #ffeeba;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 12px 20px;
+  border-radius: .25em;
+  line-height: 1.5;
+  margin: 1.5rem;
+}
+
+body .mermaid-view div.mermaid-error-message p{
+  margin: 0;
+}

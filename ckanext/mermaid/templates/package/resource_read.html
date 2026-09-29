@@ -1,0 +1,12 @@
+{% ckan_extends %}
+
+{%- block styles %}
+  {{ super() }}
+  {# target body, to override :root #}
+  <style nonce="{{- h.get_inline_script_nonce() if 'get_inline_script_nonce' in h else '' -}}">
+    body{
+      --mermaid-icon-uri: url("{{ h.mermaid_icon_uri() }}");
+    }
+  </style>
+  {% asset 'ckanext-mermaid/main-css' %}
+{% endblock %}

@@ -1,0 +1,31 @@
+form-css:
+  output: ckanext-mermaid/%(version)s_mermaid_form.css
+  contents:
+    - mermaid_form.css
+
+form-js:
+  output: ckanext-mermaid/%(version)s_mermaid_form.js
+  extra:
+    preload:
+      - base/main  # need jQuery
+  contents:
+    - mermaid_form.js
+
+view-css:
+  output: ckanext-mermaid/%(version)s_mermaid_view.css
+  contents:
+    - mermaid_view.css
+
+view-js:
+  output: ckanext-mermaid/%(version)s_mermaid_view.js
+  extra:
+    preload:
+      - base/main  # need ckan JS and jQuery
+  contents:
+    - vendor/mermaid.js  # dist release
+    - mermaid_view.js
+
+main-css:
+  output: ckanext-mermaid/%(version)s_mermaid.css
+  contents:
+    - mermaid.css

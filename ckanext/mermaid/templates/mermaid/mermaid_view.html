@@ -1,0 +1,31 @@
+{% macro mermaid_error_message(message) %}
+  <div class="mermaid-error-message">
+    <p><i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;{{ message }}</p>
+  </div>
+{% endmacro %}
+
+{%- block page -%}
+  <div class="mermaid-view" data-fullscreen="{{ fullscreen }}">
+    {% if markdown and not error %}
+      {# Load CKAN JS module to initialize the embedded Mermaid Render via Mermaid JS lib #}
+      <div data-module="mermaid-viewer">
+        <div id="mermaid-wrapper">
+          <div id="mermaid-container">
+            {% if label %}
+              <strong>{{- label -}}</strong><br/>
+            {% endif %}
+            <pre>{{- markdown -}}</pre>
+          </div>
+        </div>
+      </div>
+    {% elif error %}
+      {# Specific error messages #}
+      {{ mermaid_error_message(error) }}
+    {% else %}
+      {# Fallback, generic error message #}
+      {{ mermaid_error_message(_("Something went wrong. We could not render the Mermaid syntax.")) }}
+    {% endif %}
+  </div>
+  {% asset 'ckanext-mermaid/view-css' %}
+  {% asset 'ckanext-mermaid/view-js' %}
+{%- endblock -%}
