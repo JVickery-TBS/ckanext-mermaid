@@ -36,6 +36,9 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
         markdown = None
         fullscreen = False
 
+        i18n_enabled = plugins.toolkit.asbool(
+            plugins.toolkit.config.get(
+                'ckanext.mermaid.internal_i18n', False))
         required_locales, default_locale, available_locales = \
             helpers.get_supported_locales()
         lang = default_locale
@@ -45,6 +48,10 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
         resource_view = data_dict.get('resource_view', {})
         label = resource_view.get('label_%s' % lang, None)
         markdown = resource_view.get('markdown_%s' % lang, None)
+        is_default_lang = False
+        if not markdown:
+            markdown = resource_view.get('markdown_%s' % default_locale, None)
+            is_default_lang = True
 
         if (
           has_request_context() and
@@ -58,6 +65,8 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
                 'required_locales': required_locales,
                 'default_locale': default_locale,
                 'available_locales': available_locales,
+                'i18n_enabled': i18n_enabled,
+                'is_default_lang': is_default_lang,
                 'fullscreen': fullscreen}
 
     def view_template(self,

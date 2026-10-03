@@ -5,16 +5,31 @@
 {% endmacro %}
 
 {%- block page -%}
+  <style nonce="{{- h.get_inline_script_nonce() if 'get_inline_script_nonce' in h else '' -}}">
+    body .mermaid-view div.mermaid{
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.325s ease-in-out;
+    }
+    body .mermaid-view div.mermaid.mermaid-show{
+      pointer-events: all;
+      opacity: 1;
+    }
+    body .mermaid-view svg > text[class$="TitleText"]{}
+  </style>
   <div class="mermaid-view" data-fullscreen="{{ fullscreen }}">
+    {% if is_default_lang and default_locale != h.lang() %}
+      <div>Not translated into current language. TODO: make this better...</div>
+    {% endif %}
     {% if markdown and not error %}
       {# Load CKAN JS module to initialize the embedded Mermaid Render via Mermaid JS lib #}
       <div data-module="mermaid-viewer">
-        <div id="mermaid-wrapper">
-          <div id="mermaid-container">
-            {% if label %}
-              <strong>{{- label -}}</strong><br/>
-            {% endif %}
-            <pre>{{- markdown -}}</pre>
+        <div class="mermaid-wrapper">
+          {% if label %}
+            <strong>{{- label -}}</strong><br/>
+          {% endif %}
+          <div class="mermaid-container">
+            <div class="mermaid" aria-hidden="true">{{- markdown -}}</div>
           </div>
         </div>
       </div>

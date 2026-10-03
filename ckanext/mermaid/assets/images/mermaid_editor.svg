@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="#111827"/>
+
+  <!-- Mermaid-inspired diagram icon -->
+  <!-- Top node -->
+  <rect x="11" y="4" width="10" height="6" rx="1" fill="none" stroke="#fff" stroke-width="1.5"/>
+
+  <!-- Middle nodes -->
+  <rect x="4" y="13" width="10" height="6" rx="1" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <rect x="18" y="13" width="10" height="6" rx="1" fill="none" stroke="#fff" stroke-width="1.5"/>
+
+  <!-- Bottom node -->
+  <rect x="11" y="22" width="10" height="6" rx="1" fill="none" stroke="#fff" stroke-width="1.5"/>
+
+  <!-- Connecting lines -->
+  <line x1="16" y1="10" x2="9" y2="13" stroke="#fff" stroke-width="1.5"/>
+  <line x1="16" y1="10" x2="23" y2="13" stroke="#fff" stroke-width="1.5"/>
+  <line x1="9" y1="19" x2="16" y2="22" stroke="#fff" stroke-width="1.5"/>
+  <line x1="23" y1="19" x2="16" y2="22" stroke="#fff" stroke-width="1.5"/>
+</svg>

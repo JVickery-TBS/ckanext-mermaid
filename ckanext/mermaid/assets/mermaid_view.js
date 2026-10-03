@@ -5,10 +5,30 @@ this.ckan.module('mermaid-viewer', function($){
       config: {},
     },
     initialize: function (){
-      let viewContainer = $('#mermaid-container');
+      let moduleElement = this.el;
+      let viewContainer = $(moduleElement).find('.mermaid-container');
 
-      console.log('Successfully rendered Mermaid Markdown...');
+      const maxTries = 35;
+      let interval = false;
+      let tries = 0;
 
+      interval = setInterval(function(){
+        const MERMAID = $(viewContainer).children('.mermaid');
+        const hasSVG = typeof $(MERMAID).find('svg') != 'undefined' && $(MERMAID).find('svg').length > 0;
+        if( tries > maxTries ){
+          clearInterval(interval);
+          interval = false;
+          return;
+        }
+        if( $(MERMAID).attr('data-processed') == 'true' && hasSVG ){
+          clearInterval(interval);
+          interval = false;
+          $(MERMAID).addClass('mermaid-show');
+          $(MERMAID).attr('aria-hidden', 'false');
+          return;
+        }
+        tries++;
+      }, 150);
     }
   };
 });
