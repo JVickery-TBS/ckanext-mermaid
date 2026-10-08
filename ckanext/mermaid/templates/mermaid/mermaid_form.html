@@ -1,40 +1,12 @@
 {% import 'macros/form.html' as form %}
 
-{% if not i18n_enabled %}
-  <fieldset>
-    <legend>{{ _("Mermaid Markdown Syntax") }}</legend>
-    {% call form.textarea(
-      'markdown_' ~ default_locale,
-      id='field-markdown_' ~ default_locale,
-      label=_('Markdown Syntax'),
-      value=data['markdown_' ~ default_locale],
-      error=errors['markdown_' ~ default_locale],
-      is_required=true,
-      rows=30,
-      attrs={'class': 'form-control w-full', 'size': '80', 'rows': 30}) %}
-      {{ form.info(_('The Mermaid Markdown code')) }}
-      <span class="btn btn-sm btn-info" data-preview="markdown_{{- default_locale -}}">{{ _('Preview') }}</span>
-    {% endcall %}
-  </fieldset>
-{% else %}
-  <fieldset>
-    <legend>{{ _("Mermaid Markdown Syntax by Language") }}</legend>
-    {% for locale in available_locales %}
-      {% call form.textarea(
-        'markdown_' ~ locale,
-        id='field-markdown_' ~ locale,
-        label=_('Markdown Syntax') ~ ' (' ~ locale.upper() ~ ')',
-        value=data['markdown_' ~ locale],
-        error=errors['markdown_' ~ locale],
-        is_required=(locale in required_locales),
-        rows=30,
-        attrs={'class': 'form-control w-full', 'size': '80', 'rows': 30}) %}
-        {{ form.info(_('The Mermaid Markdown code') ~ ' (' ~ locale.upper() ~ ')') }}
-        <span class="btn btn-sm btn-info" data-preview="markdown_{{- locale -}}">{{ _('Preview') }}</span>
-      {% endcall %}
-    {% endfor %}
-  </fieldset>
-{% endif %}
+<div class="mermaid-dashboard-builder">
+  <div class="grid-stack-wrapper">
+    <div class="grid-stack"></div>
+  </div>
+</div>
+
+<input type="hidden" id="mermaid_dashboard" name="mermaid_dashboard" value="{{ data['mermaid_dashboard'] }}" data-icon-uri="{{- icon_uri -}}" />
 
 {% asset 'ckanext-mermaid/form-css' %}
 {% asset 'ckanext-mermaid/form-js' %}

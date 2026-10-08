@@ -9,3 +9,131 @@ body [data-module="resource-view-filters-form"]{
 body .public-report-field{
   display: none;
 }
+
+.mermaid-dashboard-builder{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper{
+  padding: 5px;
+  margin: -10px;
+  background-color: rgba(51, 51, 51, 0.075);
+  border-radius: 8px;
+}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack{}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack .ui-resizable-handle{
+  transition-duration: 0.325s;
+}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack > .grid-stack-item{
+  background-color: white;
+  border-radius: 8px;
+  border: 5px solid rgba(51, 51, 51, 0.075);
+}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack > .grid-stack-item.mermaid-grid-add-button-wrapper{
+  background-color: transparent;
+  border-width: 3px;
+  border-style: dashed;
+  border-color: rgba(51, 51, 51, 0.125);
+  color: rgba(51, 51, 51, 0.125);
+  margin: auto;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  transition-duration: 0.325s;
+}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack > .grid-stack-item.mermaid-grid-add-button-wrapper:active,
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack > .grid-stack-item.mermaid-grid-add-button-wrapper:hover,
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack > .grid-stack-item.mermaid-grid-add-button-wrapper:focus{
+  border-color: rgba(51, 51, 51, 0.225);
+  color: rgba(51, 51, 51, 0.325);
+}
+
+.mermaid-dashboard-builder > .grid-stack-wrapper > .grid-stack > .grid-stack-item.mermaid-grid-add-button-wrapper .grid-stack-item-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: inherit;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .mermaid-grid-diagram-toolbar{
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  transition-duration: 0.325s;
+}
+
+.mermaid-grid-diagram-wrapper:hover .mermaid-grid-diagram-container .mermaid-grid-diagram-toolbar,
+.mermaid-grid-diagram-wrapper:active .mermaid-grid-diagram-container .mermaid-grid-diagram-toolbar,
+.mermaid-grid-diagram-wrapper:focus .mermaid-grid-diagram-container .mermaid-grid-diagram-toolbar{
+  display: inline-block;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .delete-widget{
+  cursor: pointer;
+  color: #ff7961;
+  opacity: 0.5;
+  display: inline-block;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .delete-widget:hover,
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .delete-widget:active,
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .delete-widget:focus{
+  opacity: 1;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .edit-widget{
+  cursor: pointer;
+  color: #335075;
+  opacity: 0.5;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .edit-widget:hover,
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .edit-widget:active,
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .edit-widget:focus{
+  opacity: 1;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .mermaid-grid-diagram-placeholder{
+  pointer-events: none !important;
+  opacity: 0.25;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#edit-mermaid-widget-modal .modal-dialog{
+  min-height: 80% !important;
+  max-height: 80% !important;
+  height: 80% !important;
+  min-width: 50% !important;
+}
+
+#edit-mermaid-widget-modal .modal-dialog textarea{
+  min-width: 100% !important;
+  width: 100% !important;
+  max-height: 50vh !important;
+}

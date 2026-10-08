@@ -1,13 +1,13 @@
 from flask import has_request_context
 
 from typing import Dict, Any, Callable
-from ckan.types import DataDict, Context
+from ckan.types import DataDict, Context, Validator
 from ckan.common import CKANConfig
 
 import ckan.plugins as plugins
 from ckan.lib.plugins import DefaultTranslation
 
-from ckanext.mermaid import schema, helpers
+from ckanext.mermaid import schema, helpers, validators
 
 
 class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -15,6 +15,7 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
     Integrate Mermaid Markdown JS library into a CKAN view.
     """
     plugins.implements(plugins.IConfigurer, inherit=True)
+    plugins.implements(plugins.IValidators, inherit=True)
     plugins.implements(plugins.IResourceView, inherit=True)
     plugins.implements(plugins.ITranslation, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
@@ -25,6 +26,10 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
         plugins.toolkit.add_resource('assets', 'ckanext-mermaid')
         plugins.toolkit.add_public_directory(config, 'assets/images')
 
+    # IValidators
+    def get_validators(self) -> Dict[str, Validator]:
+        return {'grid_stack_json': validators.grid_stack_json}
+
     # IResourceView
     def can_view(self, data_dict: DataDict) -> bool:
         return True
@@ -33,25 +38,11 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
                                  context: Context,
                                  data_dict: DataDict) -> Dict[str, Any]:
         label = None
-        markdown = None
+        mermaid_dashboard = None
         fullscreen = False
 
-        i18n_enabled = plugins.toolkit.asbool(
-            plugins.toolkit.config.get(
-                'ckanext.mermaid.internal_i18n', False))
-        required_locales, default_locale, available_locales = \
-            helpers.get_supported_locales()
-        lang = default_locale
-        if has_request_context():
-            lang = plugins.toolkit.h.lang()
-
         resource_view = data_dict.get('resource_view', {})
-        label = resource_view.get('label_%s' % lang, None)
-        markdown = resource_view.get('markdown_%s' % lang, None)
-        is_default_lang = False
-        if not markdown:
-            markdown = resource_view.get('markdown_%s' % default_locale, None)
-            is_default_lang = True
+        mermaid_dashboard = resource_view.get('mermaid_dashboard' , None)
 
         if (
           has_request_context() and
@@ -60,13 +51,9 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
             fullscreen = True
 
         return {'label': label,
-                'markdown': markdown,
+                'mermaid_dashboard': mermaid_dashboard,
+                'icon_uri': helpers.mermaid_icon_uri(),
                 'error': None,
-                'required_locales': required_locales,
-                'default_locale': default_locale,
-                'available_locales': available_locales,
-                'i18n_enabled': i18n_enabled,
-                'is_default_lang': is_default_lang,
                 'fullscreen': fullscreen}
 
     def view_template(self,
@@ -82,10 +69,11 @@ class MermaidViewPlugin(plugins.SingletonPlugin, DefaultTranslation):
     def info(self) -> Dict[str, Any]:
         return {
             'name': 'mermaid_view',
-            'title': plugins.toolkit._('Mermaid Markdown'),
+            'title': plugins.toolkit._('Mermaid Dashboard'),
             'filterable': False,
             'icon': 'mermaid',
-            'default_title': plugins.toolkit._('Mermaid Markdown'),
+            'default_title': plugins.toolkit._('Mermaid Dashboard'),
+            'full_page_edit': True,
             'preview_enabled': False,
             'schema': schema.get_view_schema(),
             'iframed': False

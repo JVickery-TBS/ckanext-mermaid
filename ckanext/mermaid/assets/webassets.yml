@@ -1,6 +1,7 @@
 form-css:
   output: ckanext-mermaid/%(version)s_mermaid_form.css
   contents:
+    - vendor/gridstack.css  # dist release; https://cdn.jsdelivr.net/npm/gridstack@14.0.0/dist/gridstack.min.css
     - mermaid_form.css
 
 form-js:
@@ -9,6 +10,7 @@ form-js:
     preload:
       - base/main  # need jQuery
   contents:
+    - vendor/gridstack.js  # dist release; https://cdn.jsdelivr.net/npm/gridstack@14.0.0/dist/gridstack-all.min.js
     - mermaid_form.js
 
 view-css:
