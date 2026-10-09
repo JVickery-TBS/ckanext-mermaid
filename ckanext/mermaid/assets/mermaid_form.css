@@ -13,6 +13,7 @@ body .public-report-field{
 .mermaid-dashboard-builder{
   margin-top: 30px;
   margin-bottom: 30px;
+  position: relative;
 }
 
 .mermaid-dashboard-builder > .grid-stack-wrapper{
@@ -72,7 +73,7 @@ body .public-report-field{
 .mermaid-grid-diagram-wrapper .mermaid-grid-diagram-container .mermaid-grid-diagram-toolbar{
   position: absolute;
   top: 0;
-  right: 0;
+  right: 5px;
   display: none;
   transition-duration: 0.325s;
 }
@@ -87,6 +88,7 @@ body .public-report-field{
   cursor: pointer;
   color: #ff7961;
   opacity: 0.5;
+  margin-left: 15px;
   display: inline-block;
 }
 
@@ -100,7 +102,7 @@ body .public-report-field{
   cursor: pointer;
   color: #335075;
   opacity: 0.5;
-  margin-right: 10px;
+  margin-left: 15px;
   display: inline-block;
 }
 
@@ -125,15 +127,116 @@ body .public-report-field{
   transform: translate(-50%, -50%);
 }
 
-#edit-mermaid-widget-modal .modal-dialog{
-  min-height: 80% !important;
-  max-height: 80% !important;
-  height: 80% !important;
-  min-width: 50% !important;
+#mermaid-widget-editor-wrapper{
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: -10px !important;
+  margin-right: -10px !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: calc(100% + 20px);
+  height: 100%;
+  z-index: -1;
+  pointer-events: none !important;
+  overflow: hidden;
+  border-radius: 8px;
+  transition-duration: 0.325s;
 }
 
-#edit-mermaid-widget-modal .modal-dialog textarea{
-  min-width: 100% !important;
-  width: 100% !important;
-  max-height: 50vh !important;
+#mermaid-widget-editor-wrapper.mermaid-widget-editor-opened{
+  z-index: 1;
+  pointer-events: all !important;
 }
+
+#mermaid-widget-editor-wrapper .accordion-item{
+  border: none !important;
+  background-color: transparent;
+  position: relative;
+}
+
+#mermaid-widget-editor-wrapper .accordion-button{
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+#mermaid-widget-editor-wrapper .accordion-button.collapsed{
+  pointer-events: none !important;
+  background-color: transparent;
+  visibility: hidden;
+}
+
+#mermaid-widget-editor-wrapper.mermaid-widget-editor-opened .accordion-item{
+  height: 100%;
+}
+
+#mermaid-widget-editor-wrapper.mermaid-widget-editor-opened #mermaid-widget-editor-content{
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  height: 100%;
+  padding: 10px;
+}
+
+#mermaid-widget-editor-wrapper.mermaid-widget-editor-opened #mermaid-widget-editor-content textarea{
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  display: block;
+}
+
+#mermaid-widget-editor-wrapper.mermaid-widget-editor-opened #mermaid-widget-editor-label{
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background-color: transparent !important;
+  border: none !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+#mermaid-widget-editor-wrapper.mermaid-widget-editor-opened #mermaid-widget-editor-label button{
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#mermaid-widget-editor-wrapper button[data-close-type]{
+  padding: 0 !important;
+  line-height: 1 !important;
+  margin-left: 15px !important;
+}
+
+#mermaid-widget-editor-wrapper button[data-close-type]::after{
+  background: none !important;
+  font-family: 'FontAwesome';
+  font-size: 18px !important;
+}
+
+#mermaid-widget-editor-wrapper button[data-close-type]:hover::after,
+#mermaid-widget-editor-wrapper button[data-close-type]:active::after,
+#mermaid-widget-editor-wrapper button[data-close-type]:focus::after{
+  opacity: 1;
+}
+
+#mermaid-widget-editor-wrapper button[data-close-type="exit"]::after{
+  content: '\f00d';
+  color: #ff7961;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+#mermaid-widget-editor-wrapper button[data-close-type="save"]::after{
+  content: '\f0c7';
+  color: #335075;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+

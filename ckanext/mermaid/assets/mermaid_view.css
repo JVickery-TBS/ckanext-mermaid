@@ -1,9 +1,5 @@
 body .mermaid-view{
   background: none !important;
+  margin-left: -15px !important;
+  margin-right: -15px !important;
 }
-
-body .mermaid-view div.mermaid-wrapper{}
-
-body .mermaid-view div.mermaid-container{}
-
-body .mermaid-view div.mermaid{}

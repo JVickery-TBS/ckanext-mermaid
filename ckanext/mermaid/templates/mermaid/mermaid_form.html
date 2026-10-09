@@ -1,6 +1,29 @@
 {% import 'macros/form.html' as form %}
 
 <div class="mermaid-dashboard-builder">
+  <div class="accordion" aria-hidden="true" id="mermaid-widget-editor-wrapper">
+    <div class="accordion-item">
+      <span class="accordion-header" id="mermaid-widget-editor-label">
+        <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse" aria-expanded="false"
+                data-close-type="exit"
+                data-bs-target="#mermaid-widget-editor-content"
+                aria-controls="mermaid-widget-editor-content">
+        </button>
+        <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse" aria-expanded="false"
+                data-close-type="save"
+                data-bs-target="#mermaid-widget-editor-content"
+                aria-controls="mermaid-widget-editor-content">
+        </button>
+      </span>
+      <div id="mermaid-widget-editor-content"
+           class="accordion-collapse collapse"
+           aria-labelledby="mermaid-widget-editor-label">
+        <textarea class="form-control mermaid-src" id="mermaid-widget-editor" rows="15"></textarea>
+      </div>
+    </div>
+  </div>
   <div class="grid-stack-wrapper">
     <div class="grid-stack"></div>
   </div>

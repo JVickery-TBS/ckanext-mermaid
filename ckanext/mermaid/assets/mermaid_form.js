@@ -10,19 +10,39 @@ window.addEventListener('load', function(){
 
     let addButton;
     const saveField = $('input#mermaid_dashboard');
+    const editorWrapper = $('#mermaid-widget-editor-wrapper');
+    const editorField = $('#mermaid-widget-editor');
     const iconURI = $(saveField).attr('data-icon-uri');
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      useMaxWidth: true,
+    });
     const grid = GridStack.init({
+      staticGrid: false,
       column: 12,
       float: false,
+      sizeToContent: false,
     });
+
+    $('#mermaid-widget-editor-content').on('hidden.bs.collapse', _event => {
+      /**
+       * Closes the widget editor when the accordion is collapsed.
+       */
+      $(editorWrapper).removeClass('mermaid-widget-editor-opened').attr('aria-hidden', 'true');
+    });
+
     if( $(saveField).val() && $(saveField).val().length > 0 ){
+      /**
+       * Load saved widgets.
+       */
       try{
         const saved = JSON.parse($(saveField).val() || '[]');
         saved.forEach(_data => {
           _add_widget(_data.x, _data.y, _data.w, _data.h, _data.content, _data.mermaid);
         });
       }catch(_err){
-        console.error('Unable to load Mermaid layout:', _err);
+        console.error('Unable to load Mermaid layout: ', _err);
       }
     }
 
@@ -40,7 +60,7 @@ window.addEventListener('load', function(){
             w: node.w,
             h: node.h,
             content: '',
-            mermaid: '',
+            mermaid: _el.dataset.mermaid || '',
           };
         });
       $(saveField).val(JSON.stringify(layout));
@@ -51,46 +71,24 @@ window.addEventListener('load', function(){
        * Adds a modal to the page with a textarea
        * to input the Mermaid syntax.
        */
-      const template = `
-        <div class="modal show"
-             id="edit-mermaid-widget-modal"
-             tabindex="0"
-             role="dialog"
-             aria-labelledby="edit-mermaid-widget-modal-label"
-             aria-hidden="false">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title" id="edit-mermaid-widget-modal-label">Edit Mermaid Diagram</h3>
-                <button type="button" class="btn-close" id="edit-mermaid-widget-modal-dismiss" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <textarea class="form-control mermaid-src" rows="15"></textarea>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-sm btn-secondary" id="edit-mermaid-widget-modal-cancel">Cancel</button>
-                <button class="btn btn-sm btn-primary" id="edit-mermaid-widget-modal-save">Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      $('body').append(template);
-      const modal = $('#edit-mermaid-widget-modal')
-      const input = $(modal).find('textarea');
-      $(input).focus();
-      const dismissButton = $(modal).find('#edit-mermaid-widget-modal-dismiss');
-      const closeButton = $(modal).find('#edit-mermaid-widget-modal-cancel');
-      const saveButton = $(modal).find('#edit-mermaid-widget-modal-save');
-      $(dismissButton).on('click', _event => {
-        $(modal).remove();
+      $(editorField).val(_widget.dataset.mermaid || '');
+      $('#mermaid-widget-editor-content').collapse('show');
+      $(editorWrapper).addClass('mermaid-widget-editor-opened').attr('aria-hidden', 'false');
+      $(editorField).focus();
+
+      const closeButton = $(editorWrapper).find('.accordion-button[data-close-type="exit"]');
+      const saveButton = $(editorWrapper).find('.accordion-button[data-close-type="save"]');
+
+      closeButton.off('click.ExitEditor');
+      closeButton.on('click.ExitEditor', _event => {
+        $(editorField).val('');  // clear the textarea
       });
-      $(closeButton).on('click', _event => {
-        $(modal).remove();
-      });
-      $(saveButton).on('click', _event => {
-        _widget.dataset.mermaid = $(input).val();
-        $(modal).remove();
+
+      saveButton.off('click.SaveEditor');
+      saveButton.on('click.SaveEditor', _event => {
+        _widget.dataset.mermaid = $(editorField).val();
+        $(editorField).val('');  // clear the textarea
+        _render_mermaid(_widget);
       });
     }
 
@@ -98,6 +96,18 @@ window.addEventListener('load', function(){
       /**
        * Renders the Mermaid graphic in the widget.
        */
+      const container = _widget.querySelector('.mermaid-grid-diagram-content');
+      container.replaceChildren();
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.textContent = _widget.dataset.mermaid || '';
+      container.appendChild(diagram);
+      mermaid.run({
+        nodes: [diagram]
+      }).catch(_err => {
+        console.error('Unable to render Mermaid diagram: ', _err);
+        container.textContent = 'Unable to render diagram. Check the Mermaid syntax.';
+      });
     }
 
     function _add_widget(_x = 0, _y = 0, _w = 12, _h = 2, _content = '', _mermaid = ''){
@@ -120,6 +130,11 @@ window.addEventListener('load', function(){
           </div>
         `
       });
+
+      if( _mermaid.length > 0 ){
+        widget.dataset.mermaid = _mermaid;
+        _render_mermaid(widget);
+      }
 
       widget.classList.add('mermaid-grid-diagram-wrapper');
       widget.setAttribute('data-widget-type', 'diagram');

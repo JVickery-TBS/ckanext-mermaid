@@ -1,34 +1,44 @@
-this.ckan.module('mermaid-viewer', function($){
-  return {
-    /* options object can be extended using data-module-* attributes */
-    options : {
-      config: {},
-    },
-    initialize: function (){
-      let moduleElement = this.el;
-      let viewContainer = $(moduleElement).find('.mermaid-container');
+/**
+ * NOTE: Gridstack does not support older browsers,
+ *       so we can use more modern ECMA6.
+ */
+window.addEventListener('load', function(){
+  $(document).ready(function() {
+      const data = MERMAID_DASHBOARD_DATA;
+      const grid = GridStack.init({
+        staticGrid: true,
+        column: 12,
+        float: false,
+        cellHeight: 'auto',
+        sizeToContent: true,
+      });
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'strict',
+        useMaxWidth: true,
+      });
 
-      const maxTries = 35;
-      let interval = false;
-      let tries = 0;
+      data.forEach(_data => {
+        const widget = grid.addWidget({
+          x: _data.x,
+          y: _data.y,
+          w: _data.w,
+          h: _data.h,
+          noMove: true,
+          noResize: true
+        });
 
-      interval = setInterval(function(){
-        const MERMAID = $(viewContainer).children('.mermaid');
-        const hasSVG = typeof $(MERMAID).find('svg') != 'undefined' && $(MERMAID).find('svg').length > 0;
-        if( tries > maxTries ){
-          clearInterval(interval);
-          interval = false;
-          return;
-        }
-        if( $(MERMAID).attr('data-processed') == 'true' && hasSVG ){
-          clearInterval(interval);
-          interval = false;
-          $(MERMAID).addClass('mermaid-show');
-          $(MERMAID).attr('aria-hidden', 'false');
-          return;
-        }
-        tries++;
-      }, 150);
-    }
-  };
+        const container = widget.querySelector('.grid-stack-item-content');
+        const diagram = document.createElement('div');
+        diagram.className = 'mermaid';
+        diagram.textContent = _data.mermaid || '';
+        container.appendChild(diagram);
+        mermaid.run({
+          nodes: [diagram]
+        }).catch(_err => {
+          console.error('Unable to render Mermaid diagram: ', _err);
+          container.textContent = '';  // hide front-end error
+        });
+      });
+  });
 });

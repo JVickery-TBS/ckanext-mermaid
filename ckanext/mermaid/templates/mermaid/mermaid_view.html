@@ -5,33 +5,14 @@
 {% endmacro %}
 
 {%- block page -%}
-  <style nonce="{{- h.get_inline_script_nonce() if 'get_inline_script_nonce' in h else '' -}}">
-    body .mermaid-view div.mermaid{
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.325s ease-in-out;
-    }
-    body .mermaid-view div.mermaid.mermaid-show{
-      pointer-events: all;
-      opacity: 1;
-    }
-    body .mermaid-view svg > text[class$="TitleText"]{}
-  </style>
+  <script nonce="{{- h.get_inline_script_nonce() if 'get_inline_script_nonce' in h else '' -}}">
+    const MERMAID_DASHBOARD_DATA = JSON.parse({{- mermaid_dashboard|tojson -}} || '[]');
+  </script>
   <div class="mermaid-view" data-fullscreen="{{ fullscreen }}">
-    {% if is_default_lang and default_locale != h.lang() %}
-      <div>Not translated into current language. TODO: make this better...</div>
-    {% endif %}
-    {% if markdown and not error %}
-      {# Load CKAN JS module to initialize the embedded Mermaid Render via Mermaid JS lib #}
-      <div data-module="mermaid-viewer">
-        <div class="mermaid-wrapper">
-          {% if label %}
-            <strong>{{- label -}}</strong><br/>
-          {% endif %}
-          <div class="mermaid-container">
-            <div class="mermaid" aria-hidden="true">{{- markdown -}}</div>
-          </div>
-        </div>
+    {% if mermaid_dashboard and not error %}
+      {# Load CKAN JS module to initialize the embedded Mermaid Render via Mermaid JS lib w/ Gridstack JS lib #}
+      <div class="grid-stack-wrapper">
+        <div class="grid-stack"></div>
       </div>
     {% elif error %}
       {# Specific error messages #}
