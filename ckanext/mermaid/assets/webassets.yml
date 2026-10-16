@@ -10,6 +10,9 @@ form-js:
     preload:
       - base/main  # need jQuery
   contents:
+    - vendor/ace.js  # dist release; https://github.com/ajaxorg/ace-builds/tree/master/src-min-noconflict
+    - vendor/theme-github.js
+    - vendor/mode-yaml.js
     - vendor/gridstack.js  # dist release; https://cdn.jsdelivr.net/npm/gridstack@14.0.0/dist/gridstack-all.min.js
     - vendor/mermaid.js  # dist release; https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs
     - mermaid_form.js

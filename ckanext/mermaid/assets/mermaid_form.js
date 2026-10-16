@@ -25,6 +25,131 @@ window.addEventListener('load', function(){
       sizeToContent: false,
     });
 
+    ace.define('ace/mode/mermaid', function(require, exports, module) {
+      var oop = require("../lib/oop");
+      var TextMode = require("./text").Mode;
+      var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+      var MermaidHighlightRules = function(){
+        this.$rules = {
+          start: [
+            {
+              token: "punctuation.definition.frontmatter",
+              regex: /^\s*---\s*$/,
+              next: "frontmatter"
+            },
+            {
+              token: "keyword.control.mermaid",
+              regex: /\b(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram-v2?|erDiagram|gantt|pie|mindmap|timeline|gitGraph)\b/
+            },
+            {
+              token: "comment.line.percentage",
+              regex: /%%.*$/
+            },
+            {
+              token: "string",
+              regex: /"(?:[^"\\]|\\.)*"|'[^']*'/
+            },
+            {
+              token: "support.function",
+              regex: /-->|---|-\.->|==>|-->>|->>|--x|--o|<-->|<--/
+            }
+          ],
+          frontmatter: [
+            {
+              token: "punctuation.definition.frontmatter",
+              regex: /^\s*---\s*$/,
+              next: "mermaid"
+            },
+            {
+              token: "comment.line.number-sign",
+              regex: /#.*$/
+            },
+            {
+              token: "entity.name.tag.yaml",
+              regex: /^\s*[\w.-]+(?=\s*:)/
+            },
+            {
+              token: "punctuation.separator.key-value",
+              regex: /:/
+            },
+            {
+              token: "constant.numeric",
+              regex: /\b\d+(?:\.\d+)?\b/
+            },
+            {
+              token: "constant.language",
+              regex: /\b(?:true|false|null|yes|no|on|off)\b/i
+            },
+            {
+              token: "string",
+              regex: /"(?:[^"\\]|\\.)*"|'[^']*'/
+            },
+            {
+              token: "constant.language.color",
+              regex: /#[0-9a-fA-F]{3,8}\b/
+            },
+            {
+              token: "keyword",
+              regex: /^\s*-\s+/
+            }
+          ],
+          mermaid: [
+            {
+              token: "comment.line.percentage",
+              regex: /%%.*$/
+            },
+            {
+              token: "keyword.control.mermaid",
+              regex: /\b(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram-v2?|erDiagram|gantt|pie|mindmap|timeline|gitGraph)\b/
+            },
+            {
+              token: "keyword.other.mermaid",
+              regex: /\b(subgraph|end|participant|actor|activate|deactivate|loop|alt|else|opt|par|and|rect|note|over|critical|break|commit|branch|checkout|merge|cherry-pick|reset|tag|accTitle|accDescr)\b/
+            },
+            {
+              token: "constant.language.mermaid",
+              regex: /\b(LR|RL|TB|BT|TD|HIGHLIGHT|NORMAL|REVERSE|PARALLEL|EMPTY|SOLID|DOTTED|DASHED)\b/
+            },
+            {
+              token: "support.function",
+              regex: /-->|---|-\.->|==>|-->>|->>|--x|--o|<-->|<--|<\|--|\|>--/
+            },
+            {
+              token: "string",
+              regex: /"(?:[^"\\]|\\.)*"|'[^']*'/
+            },
+            {
+              token: "constant.numeric",
+              regex: /\b\d+(?:\.\d+)?\b/
+            },
+            {
+              token: "variable",
+              regex: /\b[A-Za-z_][\w-]*(?=\s*[\[\(\{])/
+            },
+            {
+              token: "keyword.operator",
+              regex: /[:=]/
+            }
+          ],
+        };
+        this.normalizeRules();
+      };
+      oop.inherits(MermaidHighlightRules, TextHighlightRules);
+      var Mode = function() {
+        this.HighlightRules = MermaidHighlightRules;
+      };
+      oop.inherits(Mode, TextMode);
+      exports.Mode = Mode;
+    });
+
+    const editor = ace.edit('mermaid-widget-editor');
+    editor.setTheme('ace/theme/github');
+    editor.session.setMode('ace/mode/mermaid');
+    editor.session.setUseWorker(false);
+    editor.session.setTabSize(2);
+    editor.session.setUseSoftTabs(true);
+    editor.setShowPrintMargin(false);
+
     $('#mermaid-widget-editor-content').on('hidden.bs.collapse', _event => {
       /**
        * Closes the widget editor when the accordion is collapsed.
@@ -71,23 +196,25 @@ window.addEventListener('load', function(){
        * Adds a modal to the page with a textarea
        * to input the Mermaid syntax.
        */
-      $(editorField).val(_widget.dataset.mermaid || '');
+      // $(editorField).val(_widget.dataset.mermaid || '');
+      const editorText = $('#mermaid-widget-editor-content').find('textarea.ace_text-input');
+      editor.setValue(_widget.dataset.mermaid || '', -1);
       $('#mermaid-widget-editor-content').collapse('show');
       $(editorWrapper).addClass('mermaid-widget-editor-opened').attr('aria-hidden', 'false');
-      $(editorField).focus();
+      $(editorText).focus();
 
       const closeButton = $(editorWrapper).find('.accordion-button[data-close-type="exit"]');
       const saveButton = $(editorWrapper).find('.accordion-button[data-close-type="save"]');
 
       closeButton.off('click.ExitEditor');
       closeButton.on('click.ExitEditor', _event => {
-        $(editorField).val('');  // clear the textarea
+        editor.setValue('', -1);  // clear the textarea
       });
 
       saveButton.off('click.SaveEditor');
       saveButton.on('click.SaveEditor', _event => {
-        _widget.dataset.mermaid = $(editorField).val();
-        $(editorField).val('');  // clear the textarea
+        _widget.dataset.mermaid = editor.getValue();
+        editor.setValue('', -1);  // clear the textarea
         _render_mermaid(_widget);
       });
     }

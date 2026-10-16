@@ -191,6 +191,7 @@ body .public-report-field{
 
 #mermaid-widget-editor-wrapper.mermaid-widget-editor-opened #mermaid-widget-editor-label{
   position: absolute;
+  z-index: 1;
   top: 20px;
   right: 25px;
   background-color: transparent !important;
@@ -239,4 +240,11 @@ body .public-report-field{
   cursor: pointer;
 }
 
+#mermaid-widget-editor-wrapper .ace_editor{
+  height: 100% !important;
+}
 
+#mermaid-widget-editor-wrapper .ace_text-input{
+  width: 100% !important;
+  height: 100% !important;
+}
