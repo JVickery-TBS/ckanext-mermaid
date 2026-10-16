@@ -231,6 +231,10 @@ window.addEventListener('load', function(){
       container.appendChild(diagram);
       mermaid.run({
         nodes: [diagram]
+      }).then(() => {
+        container.querySelectorAll('svg').forEach(_svg => {
+          // TODO: zooming and panning??
+        });
       }).catch(_err => {
         console.error('Unable to render Mermaid diagram: ', _err);
         container.textContent = 'Unable to render diagram. Check the Mermaid syntax.';

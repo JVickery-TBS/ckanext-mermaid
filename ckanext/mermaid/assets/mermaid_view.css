@@ -3,3 +3,15 @@ body .mermaid-view{
   margin-left: -15px !important;
   margin-right: -15px !important;
 }
+
+body .mermaid-container{
+  position: relative !important;
+  display: block !important;
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+body .mermaid-container svg{
+  transition: transform 0.325s ease-in-out;
+}
